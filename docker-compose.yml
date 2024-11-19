@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: online_library_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-adminpassword}
+    ports:
+      - "3306:3306"
+    volumes:
+      - /var/lib/mysql/symfony/online_library:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  adminer:
+    image: adminer:4.8.1
+    container_name: adminer
+    restart: always
+    ports:
+      - "8080:8080"
