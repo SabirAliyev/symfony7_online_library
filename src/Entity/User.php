@@ -5,9 +5,10 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -123,4 +124,15 @@ class User
 
         return $this;
     }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email; // Assuming `email` is unique identifier
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Clear sensitive data here if necessary
+    }
+    
 }
