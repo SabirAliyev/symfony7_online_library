@@ -10,24 +10,19 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class BookListController extends AbstractController
 {
-    #[Route('/book-list', name: 'book-list')]
+    #[Route('/book-list', name: 'app_book-list')]
     public function index(BookRepository $books) : Response
     {
-        dd($books->findAll());
-//        return $this->render('book_list/index.html.twig', [
-//            'controller_name' => 'BookListController',
-//        ]);
+        return $this->render('index.html.twig', [
+            'books' => $books->findAll(),
+        ]);
     }
 
-    #[Route('/book-get/{id}', name: 'book-get/{id}')]
-    public function getOne(BookRepository $book): Response
+    #[Route('/book-info/{book}', name: 'app_book_show')]
+    public function findOne(Book $book): Response
     {
-        dd($book->findAll(['id' => '1']));
-    }
-
-    #[Route('/book-info/{title}', name: 'book-info/{title}')]
-    public function findOne(BookRepository $book): Response
-    {
-        dd($book->findOneBy(['title' => 'The Great Gatsby']));
+        return $this->render('show.html.twig', [
+            'book' => $book,
+        ]);
     }
 }

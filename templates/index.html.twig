@@ -2,7 +2,7 @@
 
 {%  block title %} Index Title {%  endblock %}
 
-{%  block content %}
+{%  block body %}
 
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
@@ -10,12 +10,21 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div>
+        {% if books|length > 0 %}
+            {% for book in books %}
+                <div>
+                    <a href="{{ path('app_book_show', {book: book.id}) }}">
+                        {{ book.title }} - ({{ book.author }})
+                    </a>
+                </div>
+            {%  endfor %}
+        {% else %}
+            <p>No books found.</p>
+        {% endif %}
+    </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/sa/src/online_library/src/Controller/MicroPostController.php</code></li>
-        <li>Your template at <code>/home/sa/src/online_library/templates/micro_post/index.html.twig</code></li>
-    </ul>
+
 </div>
 
+{%  endblock %}
