@@ -42,24 +42,23 @@ class BookListController extends AbstractController
             ->add('author')
             ->add('genre')
             ->add('description')
-            ->add('submit', SubmitType::class, ['label' => 'Save'])
             ->getForm();
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $book = $form->getData();
-            $book->setCreatedAt(new \DateTime());
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $book = $form->getData();
+                $book->setCreatedAt(new \DateTime());
 
-            $entityManager->persist($book);
-            $entityManager->flush();
+                $entityManager->persist($book);
+                $entityManager->flush();
 
-            // Add a flash
-            $this->addFlash('success', 'New Book added successfully!');
-            // Redirect
-            return $this->redirectToRoute('app_book_list');
-        } else {
-            $this->addFlash('error', 'Something went wrong!');
+                $this->addFlash('success', 'New Book added successfully!');
+                return $this->redirectToRoute('app_book_list');
+            } else {
+                $this->addFlash('error', 'Something went wrong!');
+            }
         }
 
         return $this->render('add.html.twig', [
