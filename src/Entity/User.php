@@ -5,10 +5,9 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements PasswordAuthenticatedUserInterface
+class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,17 +20,14 @@ class User implements PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column]
-    private array $roles = [];
-
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $fullname = null;
+    #[ORM\Column(type: Types::JSON)]
+    private array $roles = [];
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $registeredAt = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $registeredAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $profilePicture = null;
@@ -65,18 +61,6 @@ class User implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
-
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -89,24 +73,24 @@ class User implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFullname(): ?string
+    public function getRoles(): array
     {
-        return $this->fullname;
+        return $this->roles;
     }
 
-    public function setFullname(?string $fullname): static
+    public function setRoles(array $roles): static
     {
-        $this->fullname = $fullname;
+        $this->roles = $roles;
 
         return $this;
     }
 
-    public function getRegisteredAt(): ?\DateTimeInterface
+    public function getRegisteredAt(): ?\DateTimeImmutable
     {
         return $this->registeredAt;
     }
 
-    public function setRegisteredAt(\DateTimeInterface $registeredAt): static
+    public function setRegisteredAt(\DateTimeImmutable $registeredAt): static
     {
         $this->registeredAt = $registeredAt;
 
@@ -124,15 +108,4 @@ class User implements PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    public function getUserIdentifier(): string
-    {
-        return $this->email; // Assuming `email` is unique identifier
-    }
-
-    public function eraseCredentials(): void
-    {
-        // Clear sensitive data here if necessary
-    }
-    
 }

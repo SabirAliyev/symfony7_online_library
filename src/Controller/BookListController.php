@@ -65,4 +65,38 @@ class BookListController extends AbstractController
             'form' => $form
         ]);
     }
+
+    #[Route('/book-edit', name: 'app_book_edit')]
+    public function edit(Request $request, Book $book, EntityManagerInterface $entityManager): Response
+    {
+        $user = $entityManager->getRepository(User::class)->find(1);
+
+        $form = $this->createFormBuilder($book)
+            ->add('title')
+            ->add('author')
+            ->add('genre')
+            ->add('description')
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $book = $form->getData();
+                $book->setCreatedAt(new \DateTime());
+
+                $entityManager->persist($book);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'New Book added successfully!');
+                return $this->redirectToRoute('app_book_list');
+            } else {
+                $this->addFlash('error', 'Something went wrong!');
+            }
+        }
+
+        return $this->render('add.html.twig', [
+            'form' => $form
+        ]);
+    }
 }
