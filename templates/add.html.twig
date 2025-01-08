@@ -3,24 +3,56 @@
 {% block title %} {{ form.vars.value.id ? 'Edit Book' : 'Add New Book' }} {% endblock %}
 
 {% block body %}
-    <h3>{{ form.vars.value.id ? 'Edit Book' : 'Add New Book' }}</h3>
+    <!-- Include the header -->
+    {% include '_header.html.twig' %}
 
-    {{ form_start(form) }}
-    <div>{{ form_errors(form) }}</div>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="mb-4">{{ form.vars.value.id ? 'Edit Book' : 'Add New Book' }}</h2>
 
-    <div>{{ form_label(form.title, 'Title') }}</div>
-    <div>{{ form_widget(form.title, {'attr': {'style': 'color: blue'}}) }}</div>
+                <!-- Start the form -->
+                {{ form_start(form) }}
 
-    <div>{{ form_label(form.author, 'Author') }}</div>
-    <div>{{ form_widget(form.author, {'attr': {'style': 'color: blue'}}) }}</div>
+                <!-- Display errors -->
+                {% if form_errors(form) %}
+                    <div class="alert alert-danger">
+                        {{ form_errors(form) }}
+                    </div>
+                {% endif %}
 
-    <div>{{ form_label(form.genre, 'Genre') }}</div>
-    <div>{{ form_widget(form.genre, {'attr': {'style': 'color: blue'}}) }}</div>
+                <!-- Title Field -->
+                <div class="mb-3">
+                    {{ form_label(form.title, 'Title', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                </div>
 
-    <div>{{ form_label(form.description, 'Description') }}</div>
-    <div>{{ form_widget(form.description, {'attr': {'style': 'color: blue'}}) }}</div>
+                <!-- Author Field -->
+                <div class="mb-3">
+                    {{ form_label(form.author, 'Author', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.author, {'attr': {'class': 'form-control'}}) }}
+                </div>
 
-    {{ form_row(form.submit, {'label': form.vars.value.id ? 'Save Changes' : 'Add Book'}) }}
+                <!-- Genre Field -->
+                <div class="mb-3">
+                    {{ form_label(form.genre, 'Genre', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.genre, {'attr': {'class': 'form-control'}}) }}
+                </div>
 
-    {{ form_end(form) }}
+                <!-- Description Field -->
+                <div class="mb-3">
+                    {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 4}}) }}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+                </div>
+
+                <!-- End the form -->
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
