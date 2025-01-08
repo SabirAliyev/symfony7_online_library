@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Add New Book {% endblock %}
+{% block title %} {{ form.vars.value.id ? 'Edit Book' : 'Add New Book' }} {% endblock %}
 
 {% block body %}
-    <h3>Add New Book</h3>
+    <h3>{{ form.vars.value.id ? 'Edit Book' : 'Add New Book' }}</h3>
 
     {{ form_start(form) }}
     <div>{{ form_errors(form) }}</div>
@@ -20,8 +20,7 @@
     <div>{{ form_label(form.description, 'Description') }}</div>
     <div>{{ form_widget(form.description, {'attr': {'style': 'color: blue'}}) }}</div>
 
-    {{ form_row(form.submit, {'label': 'Add Book'}) }}
+    {{ form_row(form.submit, {'label': form.vars.value.id ? 'Save Changes' : 'Add Book'}) }}
 
     {{ form_end(form) }}
-
 {% endblock %}

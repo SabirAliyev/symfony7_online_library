@@ -22,9 +22,15 @@ class BookListController extends AbstractController
         ]);
     }
 
-    #[Route('/book-info/{book}', name: 'app_book_show')]
-    public function findOne(Book $book): Response
+    #[Route('/book-info/{id}', name: 'app_book_show')]
+    public function findOne(int $id, EntityManagerInterface $entityManager): Response
     {
+        $book = $entityManager->getRepository(Book::class)->find($id);
+
+        if (!$book) {
+            throw $this->createNotFoundException('The book not found');
+        }
+
         return $this->render('show.html.twig', [
             'book' => $book,
         ]);
@@ -71,29 +77,35 @@ class BookListController extends AbstractController
         ]);
     }
 
-    #[Route('/book-edit', name: 'app_book_edit')]
-    public function edit(Request $request, Book $book, EntityManagerInterface $entityManager): Response
+    #[Route('/book-edit/{id}', name: 'app_book_edit')]
+    public function edit(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $user = $entityManager->getRepository(User::class)->find(1);
+        $book = $entityManager->getRepository(Book::class)->find($id);
 
+        if (!$book) {
+            throw $this->createNotFoundException('The book does not exist');
+        }
+
+        $book->setUpdatedAt(new \DateTimeImmutable());
         $form = $this->createFormBuilder($book)
             ->add('title')
             ->add('author')
             ->add('genre')
             ->add('description')
+            ->add('submit', SubmitType::class, [
+                'label' => 'Edit Book',
+                'attr' => [
+                    'class' => 'btn btn-primary']
+                ])
             ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $book = $form->getData();
-                $book->setCreatedAt(new \DateTime());
-
-                $entityManager->persist($book);
                 $entityManager->flush();
 
-                $this->addFlash('success', 'New Book added successfully!');
+                $this->addFlash('success', 'The book updated successfully!');
                 return $this->redirectToRoute('app_book_list');
             } else {
                 $this->addFlash('error', 'Something went wrong!');
@@ -101,7 +113,7 @@ class BookListController extends AbstractController
         }
 
         return $this->render('add.html.twig', [
-            'form' => $form
+            'form' => $form->createView(),
         ]);
     }
 }
