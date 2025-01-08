@@ -20,5 +20,8 @@
     <div>{{ form_label(form.description, 'Description') }}</div>
     <div>{{ form_widget(form.description, {'attr': {'style': 'color: blue'}}) }}</div>
 
+    {{ form_row(form.submit, {'label': 'Add Book'}) }}
+
     {{ form_end(form) }}
+
 {% endblock %}

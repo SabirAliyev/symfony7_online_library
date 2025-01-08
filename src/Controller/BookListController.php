@@ -42,6 +42,11 @@ class BookListController extends AbstractController
             ->add('author')
             ->add('genre')
             ->add('description')
+            ->add('submit', SubmitType::class, [
+                'label' => 'Add Book',
+                'attr' => [
+                    'class' => 'btn btn-primary']
+                ])
             ->getForm();
 
         $form->handleRequest($request);
@@ -49,7 +54,7 @@ class BookListController extends AbstractController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $book = $form->getData();
-                $book->setCreatedAt(new \DateTime());
+                $book->setCreatedAt(new \DateTimeImmutable());
 
                 $entityManager->persist($book);
                 $entityManager->flush();
