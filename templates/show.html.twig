@@ -18,9 +18,9 @@
         <!-- Left Section for Book Details -->
         <div class="col-md-6">
             <h2>{{ book.title }}</h2>
-            <p class="text-muted">Author: {{ book.author }}</p>
-            <p class="text-muted">Genre: {{ book.genre }}</p>
-            <p class="text-muted">Description:</p>
+            <p class="text-muted"><strong>Author:</strong> {{ book.author }}</p>
+            <p class="text-muted"><strong>Genre:</strong> {{ book.genre }}</p>
+            <p class="text-muted"><strong>Description:</strong></p>
             <p>{{ book.description }}</p>
             <a href="{{ path('app_book_edit', { id: book.id }) }}" class="btn btn-primary">Edit Book</a>
         </div>

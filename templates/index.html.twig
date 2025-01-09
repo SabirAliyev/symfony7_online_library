@@ -7,6 +7,64 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .book-slider-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .book-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+
+        .book-slider::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for a cleaner look */
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .slider-btn.left {
+            left: -2rem;
+        }
+
+        .slider-btn.right {
+            right: -2rem;
+        }
+
+        .book-card {
+            flex: 0 0 20%; /* Ensure 5 cards fit in one scroll view (adjust width as needed) */
+            max-width: 20%;
+        }
+
+        @media (max-width: 768px) {
+            .book-card {
+                flex: 0 0 50%; /* Adjust to 2 cards per scroll view for smaller screens */
+                max-width: 50%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .book-card {
+                flex: 0 0 100%; /* Full width for very small screens */
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -51,31 +109,39 @@
 <section class="py-5 bg-light">
     <div class="container">
         <h2 class="mb-4">New Additions</h2>
-        <div class="row row-cols-2 row-cols-md-4 g-4">
-            {% if books|length > 0 %}
-                {% for book in books %}
-                    <div class="col">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <!-- Display book title -->
-                                <h5 class="card-title">{{ book.title }}</h5>
-                                <!-- Display book author -->
-                                <p class="card-text text-muted">{{ book.author }}</p>
-                                <!-- Link to view book details -->
-                                <a href="{{ path('app_book_show', { id: book.id }) }}" class="btn btn-primary btn-sm">View Details</a>
-                                <!-- Link to edit book -->
-                                <a href="{{ path('app_book_edit', { id: book.id }) }}" class="btn btn-secondary btn-sm">Edit</a>
+
+        <!-- Slider Container -->
+        <div class="book-slider-container">
+            <!-- Left Button -->
+            <button class="slider-btn left" onclick="slideLeft()">&lt;</button>
+
+            <!-- Slider -->
+            <div class="book-slider">
+                {% if books|length > 0 %}
+                    {% for book in books %}
+                        <div class="book-card">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <!-- Display book title -->
+                                    <h5 class="card-title">{{ book.title }}</h5>
+                                    <!-- Display book author -->
+                                    <p class="card-text text-muted">{{ book.author }}</p>
+                                    <!-- Link to view book details -->
+                                    <a href="{{ path('app_book_show', { id: book.id }) }}" class="btn btn-primary btn-sm">View Details</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No books found.</p>
-            {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p>No books found.</p>
+                {% endif %}
+            </div>
+
+            <!-- Right Button -->
+            <button class="slider-btn right" onclick="slideRight()">&gt;</button>
         </div>
     </div>
 </section>
-
 
 <!-- Footer -->
 <footer class="bg-dark text-white py-4">
@@ -86,5 +152,22 @@
 
 <!-- Bootstrap Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const slider = document.querySelector('.book-slider');
+
+    function slideLeft() {
+        slider.scrollBy({
+            left: -slider.clientWidth,
+            behavior: 'smooth'
+        });
+    }
+
+    function slideRight() {
+        slider.scrollBy({
+            left: slider.clientWidth,
+            behavior: 'smooth'
+        });
+    }
+</script>
 </body>
 </html>
