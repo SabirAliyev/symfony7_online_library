@@ -6,9 +6,24 @@
             <a href="/book-list" class="navbar-brand">
                 <img src="logo-placeholder.png" alt="Online Library" width="150">
             </a>
-            <a href="#" class="btn btn-outline-primary">
-                <i class="fas fa-envelope-open-text"></i> Newsletter
-            </a>
+
+            <div class="d-flex align-items-center">
+                <!-- Newsletter Button -->
+                <a href="#" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-envelope-open-text"></i> Newsletter
+                </a>
+
+                <!-- Login/Logout Link -->
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <a href="{{ path('app_logout') }}" class="btn btn-outline-danger">
+                        Logout
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-outline-success">
+                        Login
+                    </a>
+                {% endif %}
+            </div>
         </div>
     </div>
 
