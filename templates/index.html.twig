@@ -7,64 +7,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .book-slider-container {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-
-        .book-slider {
-            display: flex;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            gap: 1rem;
-            padding: 1rem 0;
-        }
-
-        .book-slider::-webkit-scrollbar {
-            display: none; /* Hide scrollbar for a cleaner look */
-        }
-
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .slider-btn.left {
-            left: -2rem;
-        }
-
-        .slider-btn.right {
-            right: -2rem;
-        }
-
-        .book-card {
-            flex: 0 0 20%; /* Ensure 5 cards fit in one scroll view (adjust width as needed) */
-            max-width: 20%;
-        }
-
-        @media (max-width: 768px) {
-            .book-card {
-                flex: 0 0 50%; /* Adjust to 2 cards per scroll view for smaller screens */
-                max-width: 50%;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .book-card {
-                flex: 0 0 100%; /* Full width for very small screens */
-                max-width: 100%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('build/home.css') }}">
 </head>
 <body>
 
