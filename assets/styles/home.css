@@ -8,12 +8,47 @@
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
-    gap: 1rem;
     padding: 1rem 0;
 }
 
 .book-slider::-webkit-scrollbar {
     display: none; /* Hide scrollbar for a cleaner look */
+}
+
+.book-card {
+    flex: 0 0 200px; /* Fixed width for cards */
+    max-width: 200px; /* Prevent cards from overflowing */
+    margin-right: 1rem; /* Space between cards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}
+
+.book-card:last-child {
+    margin-right: 0; /* Avoid extra spacing after the last card */
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Ensure full card height is utilized */
+}
+
+.card-title {
+    white-space: nowrap; /* Keep title on a single line */
+    overflow: hidden; /* Hide overflowing text */
+    text-overflow: ellipsis; /* Add ellipsis for long titles */
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: #6c757d; /* Optional: Muted color for author text */
+}
+
+.card a.btn {
+    margin-top: auto; /* Push button to the bottom for better alignment */
+    text-align: center;
 }
 
 .slider-btn {
@@ -36,21 +71,28 @@
     right: -2rem;
 }
 
-.book-card {
-    flex: 0 0 20%; /* Ensure 5 cards fit in one scroll view (adjust width as needed) */
-    max-width: 20%;
-}
-
 @media (max-width: 768px) {
     .book-card {
-        flex: 0 0 50%; /* Adjust to 2 cards per scroll view for smaller screens */
-        max-width: 50%;
+        flex: 0 0 45%; /* Two cards per row */
+        max-width: 45%;
     }
 }
 
 @media (max-width: 576px) {
     .book-card {
-        flex: 0 0 100%; /* Full width for very small screens */
+        flex: 0 0 100%; /* Single card per row */
         max-width: 100%;
     }
+}
+
+/* Ensure the content wrapper takes up the full viewport height */
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
+}
+
+/* Push footer to the bottom of the page */
+footer {
+    margin-top: auto; /* Push the footer to the bottom if there's extra space */
 }
