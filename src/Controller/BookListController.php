@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Book;
 use App\Entity\User;
+use App\Entity\Review;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +15,14 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class BookListController extends AbstractController
 {
+    #[Route('/', name: 'app_home')]
+    public function home(): Response
+    {
+        return $this->render('index.html.twig',
+            ['title' => 'Book List']
+        );
+    }
+
     #[Route('/book-list', name: 'app_book_list')]
     public function index(BookRepository $books) : Response
     {
@@ -31,9 +40,19 @@ class BookListController extends AbstractController
             throw $this->createNotFoundException('The book not found');
         }
 
+        $reviews = $book->getReviews();
+
         return $this->render('show.html.twig', [
             'book' => $book,
+            'reviews' => $reviews
         ]);
+    }
+
+    private function getBookReview(int $id, EntityManagerInterface $entityManager) : array
+    {
+        $review = $entityManager->getRepository(Review::class)->findBy(['book' => $id]);
+
+        return $review;
     }
 
     #[Route('/book-add', name: 'app_book_add')]
@@ -92,6 +111,7 @@ class BookListController extends AbstractController
             ->add('author')
             ->add('genre')
             ->add('description')
+            ->add('review')
             ->add('submit', SubmitType::class, [
                 'label' => 'Edit Book',
                 'attr' => [

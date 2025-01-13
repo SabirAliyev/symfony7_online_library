@@ -23,10 +23,11 @@ class Review
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Book::class, inversedBy: 'reviews')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Book $book = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

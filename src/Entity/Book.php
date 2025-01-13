@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -47,6 +49,19 @@ class Book
 
     #[ORM\Column]
     private ?bool $isAvailable = null;
+
+    #[ORM\OneToMany(mappedBy: 'book', targetEntity: Review::class, cascade: ['persist', 'remove'])]
+    private Collection $reviews;
+
+    public function __construct()
+    {
+        $this->reviews = new ArrayCollection();
+    }
+
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
 
     public function getId(): ?int
     {
