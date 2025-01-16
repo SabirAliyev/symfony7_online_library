@@ -9,6 +9,7 @@ use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -110,8 +111,12 @@ class BookListController extends AbstractController
             ->add('title')
             ->add('author')
             ->add('genre')
-            ->add('description')
-            ->add('review')
+            ->add('description', TextareaType::class, [
+                'required' => false,
+                'attr' => [
+                    'rows' => 5,
+                    'style' => 'white-space: pre-wrap; overflow-wrap: break-word;']
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Edit Book',
                 'attr' => [
@@ -136,4 +141,52 @@ class BookListController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/book-review/{id}', name: 'app_book_review')]
+    public function review(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $review = new Review();
+        $book = $entityManager->getRepository(Book::class)->find($id);
+        $user = $entityManager->getRepository(User::class)->find(1);
+
+        $review->setBook($book);
+        $review->setUser($user);
+
+        $form = $this->createFormBuilder($review)
+            ->add('rating')
+            ->add('comment', TextareaType::class, [
+                'required' => false,
+                'attr' => [
+                    'rows' => 5,
+                    'style' => 'white-space: pre-wrap; overflow-wrap: break-word;']
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Add Review',
+                'attr' => [
+                    'class' => 'btn btn-primary']
+                ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $review = $form->getData();
+                $review->setCreatedAt(new \DateTimeImmutable());
+
+                $entityManager->persist($review);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'New Review added successfully!');
+                return $this->redirectToRoute('app_book_show', ['id' => $id]);
+            } else {
+                $this->addFlash('error', 'Something went wrong!');
+            }
+        }
+
+        return $this->render('review.html.twig', [
+            'form' => $form
+        ]);
+    }
+
 }

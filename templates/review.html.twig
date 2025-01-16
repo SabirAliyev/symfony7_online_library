@@ -17,8 +17,8 @@
     <div class="row">
         <!-- Left Section for Book Form -->
         <div class="col-md-6">
-            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and is_granted('ROLE_ADMIN') %}
-                <h2>{{ form.vars.value.id ? 'Edit Book' : 'Add New Book' }}</h2>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <h2>{{ form.vars.value.id ? 'Review Book' : 'Add book review' }}</h2>
 
                 <!-- Start the form -->
                 {{ form_start(form) }}
@@ -30,28 +30,20 @@
                     </div>
                 {% endif %}
 
-                <!-- Author Field -->
+                <!-- Rating Field -->
                 <div class="mb-3">
-                    {{ form_label(form.author, 'Author', {'label_attr': {'class': 'form-label'}}) }}
-                    {{ form_widget(form.author, {'attr': {'class': 'form-control'}}) }}
-                </div>
-
-                <!-- Title Field -->
-                <div class="mb-3">
-                    {{ form_label(form.title, 'Title', {'label_attr': {'class': 'form-label'}}) }}
-                    {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
-                </div>
-
-                <!-- Genre Field -->
-                <div class="mb-3">
-                    {{ form_label(form.genre, 'Genre', {'label_attr': {'class': 'form-label'}}) }}
-                    {{ form_widget(form.genre, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_label(form.rating, 'Rating', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.rating, {
+                        'attr': {
+                            'class': 'form-control'
+                        }
+                    }) }}
                 </div>
 
                 <!-- Description Field -->
                 <div class="mb-3">
-                    {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
-                    {{ form_widget(form.description, {
+                    {{ form_label(form.comment, 'Review', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.comment, {
                         'attr': {
                             'class': 'form-control',
                             'rows': 6,
