@@ -3,9 +3,19 @@
     <!-- Top Navigation -->
     <div class="bg-white border-bottom py-2">
         <div class="container d-flex justify-content-between align-items-center">
-            <a href="/book-list" class="navbar-brand">
-                <img src="logo-placeholder.png" alt="Online Library" width="150">
-            </a>
+            <div>
+                <a href="/book-list" class="navbar-brand">
+                    <img src="logo-placeholder.png" alt="Online Library" width="150">
+                </a>
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_book_add') }}" class="btn btn-outline-primary me-2">
+                            Add new book
+                        </a>
+                    {% endif %}
+                {% endif %}
+            </div>
+
 
             <div class="d-flex align-items-center">
                 <!-- Newsletter Button -->
