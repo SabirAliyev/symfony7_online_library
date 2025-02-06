@@ -16,15 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class BookListController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
-    public function home(): Response
-    {
-        return $this->render('index.html.twig',
-            ['title' => 'Book List']
-        );
-    }
-
-    #[Route('/book-list', name: 'app_book_list')]
+    #[Route('/', name: 'app_book_list')]
     public function index(BookRepository $books) : Response
     {
         return $this->render('index.html.twig', [
@@ -51,9 +43,7 @@ class BookListController extends AbstractController
 
     private function getBookReview(int $id, EntityManagerInterface $entityManager) : array
     {
-        $review = $entityManager->getRepository(Review::class)->findBy(['book' => $id]);
-
-        return $review;
+        return $entityManager->getRepository(Review::class)->findBy(['book' => $id]);
     }
 
     #[Route('/book-add', name: 'app_book_add')]
