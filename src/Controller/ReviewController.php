@@ -77,4 +77,30 @@ class ReviewController extends AbstractController
             'form' => $form
         ]);
     }
+
+    #[Route('/review-delete/{id}', name: 'app_review_delete')]
+    public function delete(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $review = $entityManager->getRepository(Review::class)->find($id);
+        $user = $this->getUser();
+
+        if (!$review) {
+            throw $this->createNotFoundException('The review does not exist');
+        }
+
+        if ($user !== $review->getUser() && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'You are not allowed to delete this review.');
+            return $this->redirectToRoute('app_book_show', ['id' => $review->getBook()->getId()]);
+        }
+
+        try {
+            $entityManager->remove($review);
+            $entityManager->flush();
+            $this->addFlash('success', 'Review deleted successfully!');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Something went wrong!');
+        }
+
+        return $this->redirectToRoute('app_book_show', ['id' => $review->getBook()->getId()]);
+    }
 }
