@@ -48,7 +48,7 @@ final class Version20250107084444 extends AbstractMigration
         book_id INT DEFAULT NULL, 
         user_id INT NOT NULL, 
         INDEX IDX_794381C616A2B381 (book_id), 
-        UNIQUE INDEX UNIQ_794381C6A76ED395 (user_id), 
+        UNIQUE INDEX UNIQ_794381C6A76ED395 (user_id, book_id), 
         PRIMARY KEY(id)
     ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 

@@ -135,10 +135,27 @@ class BookListController extends AbstractController
     #[Route('/book-review/{id}', name: 'app_book_review')]
     public function review(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $review = new Review();
         $book = $entityManager->getRepository(Book::class)->find($id);
-        $user = $entityManager->getRepository(User::class)->find(1);
+        $user = $this->getUser();
 
+        if (!$user) {
+            $request->getSession()->getFlashBag()->clear();
+            $this->addFlash('error', 'You need to login to review a book.');
+            return $this->redirectToRoute('app_book_show', ['id' => $id]);
+        }
+
+        $reviewRepository = $entityManager->getRepository(Review::class);
+        $existingReview = $reviewRepository->findOneBy([
+            'user' => $this->getUser(),
+            'book' => $book
+        ]);
+
+        if ($existingReview) {
+            $this->addFlash('error', 'You have already reviewed this book.');
+            return $this->redirectToRoute('app_book_show', ['id' => $id]);
+        }
+
+        $review = new Review();
         $review->setBook($book);
         $review->setUser($user);
 
