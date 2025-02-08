@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class BookListController extends AbstractController
 {
-    #[Route('/', name: 'app_book_list')]
+    #[Route('/', name: 'app_home')]
     public function index(BookRepository $books) : Response
     {
         return $this->render('index.html.twig', [
@@ -131,4 +131,13 @@ class BookListController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/catalog', name: 'app_book_list')]
+    public function list(BookRepository $bookRepository) : Response
+    {
+        return $this->render('catalog.html.twig', [
+            'books' => $bookRepository->findAll(),
+        ]);
+    }
+
 }

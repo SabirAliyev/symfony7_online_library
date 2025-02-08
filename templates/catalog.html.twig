@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Books Catalog{% endblock %}
+
+{% block body %}
+
+<!-- Flash Messages -->
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+<!-- Main Content -->
+<div class="container py-5">
+    <div class="row">
+        <div class="mt-5">
+            <h3>Books Catalog</h3>
+            {% if books|length > 0 %}
+                <ul class="list-group">
+                    {% for book in books %}
+                        <li class="list-group-item">
+                            <strong>{{ book.title }}</strong>
+                            <p class="text-muted">{{ book.description }}</p>
+                            <small class="text-muted">{{ book.createdAt|date('Y-m-d H:i') }}</small>
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('app_book_edit', { id: book.id }) }}" class="btn btn-primary btn-sm float-end">Edit</a>
+                                <a href="{{ path('app_book_delete', { id: book.id }) }}" class="btn btn-danger btn-sm float-end">Delete</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
