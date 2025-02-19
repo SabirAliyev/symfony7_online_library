@@ -64,13 +64,21 @@
                     {% for book in books %}
                         <div class="book-card me-3">
                             <div class="card h-100" style="width: 200px;">
+                                <a href="{{ path('app_book_show', { id: book.id }) }}">
+                                    {% if book.coverImage %}
+                                        <img src="/uploads/book/covers/{{ book.coverImage }}" class="img-fluid" alt="{{ book.title }}">
+                                    {% else %}
+                                        <div class="bg-light d-flex justify-content-center align-items-center" style="height: 200px; border: 1px solid #ddd;">
+                                            <p class="text-muted fs-3">No cover image</p>
+                                        </div>
+                                    {% endif %}
+                                </a>
                                 <div class="card-body">
                                     <!-- Display book title -->
                                     <h5 class="card-title text-truncate">{{ book.title }}</h5>
                                     <!-- Display book author -->
                                     <p class="card-text text-muted">{{ book.author }}</p>
                                     <!-- Link to view book details -->
-                                    <a href="{{ path('app_book_show', { id: book.id }) }}" class="btn btn-primary btn-sm">View Details</a>
                                 </div>
                             </div>
                         </div>

@@ -104,7 +104,7 @@ class BookController extends AbstractController
     }
 
     #[Route('/book-delete/{id}', name: 'app_book_delete')]
-    public function delete(BookRepository $bookRepository, int $id): Response
+    public function delete(BookRepository $bookRepository, EntityManagerInterface $entityManager, int $id): Response
     {
         $book = $bookRepository->find($id);
 
@@ -112,10 +112,9 @@ class BookController extends AbstractController
             throw $this->createNotFoundException('The book not found');
         }
 
-        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($book);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_book_list');
     }
 }

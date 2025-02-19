@@ -38,7 +38,7 @@ class BookType extends AbstractType
                 ],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Add Book',
+                'label' => 'Save',
                 'attr' => [
                     'class' => 'btn btn-primary']
             ]);
