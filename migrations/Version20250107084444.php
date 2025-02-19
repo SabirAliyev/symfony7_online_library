@@ -26,7 +26,7 @@ final class Version20250107084444 extends AbstractMigration
         id INT AUTO_INCREMENT NOT NULL, 
         title VARCHAR(255) NOT NULL, 
         author VARCHAR(50) NOT NULL, 
-        description VARCHAR(255) DEFAULT NULL, 
+        description VARCHAR(1024) DEFAULT NULL, 
         year SMALLINT DEFAULT NULL, 
         genre VARCHAR(50) DEFAULT NULL, 
         page_count INT DEFAULT NULL, 

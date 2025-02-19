@@ -60,6 +60,13 @@
                     }) }}
                 </div>
 
+                <!-- Cover Image Field -->
+                <div class="mb-3">
+                    {{ form_label(form.coverImage, 'Cover Image', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.coverImage, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.coverImage) }}
+                </div>
+
                 <!-- Submit Button -->
                 <div class="text-center">
                     {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
@@ -74,9 +81,13 @@
 
         <!-- Right Section for Book Image -->
         <div class="col-md-6 text-center">
-            <div class="bg-light d-flex justify-content-center align-items-center" style="height: 300px; border: 1px solid #ddd;">
-                <p class="text-muted">Book Image Placeholder</p>
-            </div>
+            {% if book.coverImage %}
+                <img src="/uploads/book/covers/{{ book.coverImage }}" class="img-fluid" alt="{{ book.title }}">
+            {% else %}
+                <div class="bg-light d-flex justify-content-center align-items-center" style="height: 300px; border: 1px solid #ddd;">
+                    <p class="text-muted fs-3">No cover image</p>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

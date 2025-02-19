@@ -9,6 +9,7 @@ use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,24 +23,28 @@ class BookController extends AbstractController
         $user = $entityManager->getRepository(User::class)->find(1);
         $book->setAddedBy($user);
 
-        $form = $this->createFormBuilder($book)
-            ->add('title')
-            ->add('author')
-            ->add('genre')
-            ->add('description')
-            ->add('submit', SubmitType::class, [
-                'label' => 'Add Book',
-                'attr' => [
-                    'class' => 'btn btn-primary']
-            ])
-            ->getForm();
-
+        $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $book = $form->getData();
                 $book->setCreatedAt(new \DateTimeImmutable());
+
+                $coverFile = $form->get('coverImage')->getData();
+                if ($coverFile) {
+                    $coverFileName = md5(uniqid()) . '.' . $coverFile->guessExtension();
+
+                    try {
+                        $coverFile->move(
+                            $this->getParameter('cover_image_directory'),
+                            $coverFileName
+                        );
+                        $book->setCoverImage($coverFileName);
+                    } catch (FileException $e) {
+                        $this->addFlash('error', 'Upload image file failed!');
+                    }
+                }
 
                 $entityManager->persist($book);
                 $entityManager->flush();
@@ -66,22 +71,35 @@ class BookController extends AbstractController
         }
 
         $book->setUpdatedAt(new \DateTimeImmutable());
+
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $coverFile = $form->get('coverImage')->getData();
+            if ($coverFile) {
+                $coverFileName = md5(uniqid()) . '.' . $coverFile->guessExtension();
 
+                try {
+                    $coverFile->move(
+                        $this->getParameter('cover_image_directory'),
+                        $coverFileName
+                    );
+                    $book->setCoverImage($coverFileName);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Upload image file failed!');
+                }
+            }
 
             $entityManager->flush();
-
             $this->addFlash('success', 'The book updated successfully!');
+
             return $this->redirectToRoute('app_book_list');
-        } else {
-            $this->addFlash('error', 'Something went wrong!');
         }
 
         return $this->render('add.html.twig', [
             'form' => $form->createView(),
+            'book' => $book
         ]);
     }
 
