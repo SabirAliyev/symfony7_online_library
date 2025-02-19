@@ -49,7 +49,7 @@
         <!-- Right Section for Book Image -->
         <div class="col-md-6 text-center">
             {% if book.coverImage %}
-                <img src="/uploads/book/covers/{{ book.coverImage }}" class="img-fluid" alt="{{ book.title }}">
+                <img src="/uploads/book/covers/{{ book.coverImage }}" class="img-fluid" alt="{{ book.title }}" style="height: 400px">
             {% else %}
                 <div class="bg-light d-flex justify-content-center align-items-center" style="height: 300px; border: 1px solid #ddd;">
                     <p class="text-muted fs-3">No cover image</p>
