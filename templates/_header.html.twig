@@ -57,6 +57,12 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="librariansDropdown">
                             <li><a class="dropdown-item" href="/catalog">Catalog</a></li>
+                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                <li>{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                        <a href="{{ path('app_profile_edit') }}" class="dropdown-item">Edit Profile</a>
+                                    {% endif %}
+                                </li>
+                            {% endif %}
                             <li><a class="dropdown-item" href="#">Libraries</a></li>
                             <li><a class="dropdown-item" href="#">Metadata</a></li>
                         </ul>
