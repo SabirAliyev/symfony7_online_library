@@ -61,7 +61,6 @@ class ReviewController extends AbstractController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $review = $form->getData();
-                $review->setCreatedAt(new \DateTimeImmutable());
 
                 $entityManager->persist($review);
                 $entityManager->flush();
@@ -74,7 +73,8 @@ class ReviewController extends AbstractController
         }
 
         return $this->render('review.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'book' => $book
         ]);
     }
 

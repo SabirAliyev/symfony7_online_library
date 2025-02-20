@@ -27,10 +27,24 @@
                 <ul class="list-group">
                     {% for book in books %}
                         <li class="list-group-item">
-                            <strong>{{ book.title }}</strong>
-                            <p class="text-muted">{{ book.description }}</p>
-                            <small class="text-muted">{{ book.createdAt|date('Y-m-d H:i') }}</small>
-
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <a href={{ path('app_book_show', { id: book.id }) }}>
+                                        <strong>{{ book.title }}</strong>
+                                    </a>
+                                    <p class="text-muted">{{ book.description }}</p>
+                                    <small class="text-muted">{{ book.createdAt|date('Y-m-d H:i') }}</small>
+                                </div>
+                                <div class="col-md-2" text="center">
+                                    {% if book.coverImage %}
+                                        <img src="/uploads/book/covers/{{ book.coverImage }}" class="img-fluid" alt="{{ book.title }}" style="height: 100px">
+                                    {% else %}
+                                        <div class="bg-light d-flex justify-content-center align-items-center" style="height: 100px; border: 1px solid #ddd;">
+                                            <p class="text-muted fs-3">No cover image</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <a href="{{ path('app_book_edit', { id: book.id }) }}" class="btn btn-primary btn-sm float-end">Edit</a>
                                 <a href="{{ path('app_book_delete', { id: book.id }) }}" class="btn btn-danger btn-sm float-end">Delete</a>

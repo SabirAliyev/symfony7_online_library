@@ -29,7 +29,6 @@ class BookController extends AbstractController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $book = $form->getData();
-                $book->setCreatedAt(new \DateTimeImmutable());
 
                 $coverFile = $form->get('coverImage')->getData();
                 if ($coverFile) {
@@ -57,7 +56,8 @@ class BookController extends AbstractController
         }
 
         return $this->render('add.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'book' => $book
         ]);
     }
 
@@ -69,8 +69,6 @@ class BookController extends AbstractController
         if (!$book) {
             throw $this->createNotFoundException('The book does not exist');
         }
-
-        $book->setUpdatedAt(new \DateTimeImmutable());
 
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
