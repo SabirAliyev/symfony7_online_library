@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users List{% endblock %}
+
+{% block body %}
+
+    <!-- Flash Messages -->
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <!-- Main Content -->
+    <div class="container py-1">
+        <div class="row">
+            <div class="mt-1">
+                <h3>Users List</h3>
+                {% if users|length > 0 %}
+                    <ul class="list-group">
+                        {% for user in users %}
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <a href={{ path('app_profile_edit', { id: user.id }) }}>
+                                            <strong>{{ user.name }}</strong>
+                                        </a>
+                                        <p class="text-muted">...</p>
+                                        <h6>Registration date:</h6>
+                                        <small class="text-muted">{{ user.registeredAt|date('Y-m-d H:i') }}</small>
+                                    </div>
+                                    <div class="col-md-2">
+                                        {% if user.profilePicture %}
+                                            <img src="/uploads/profile/images/{{ user.profilePicture }}" class="img-fluid" alt="{{ user.name }}" style="height: 100px">
+                                        {% else %}
+                                            <div class="bg-light d-flex justify-content-center align-items-center" style="height: 100px; border: 1px solid #ddd;">
+                                                <p class="text-muted fs-6">No profile picture</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('admin_user_edit', { id: user.id }) }}" class="btn btn-primary btn-sm float-end">Edit</a>
+                                    <a href="{{ path('admin_user_delete', { id: user.id }) }}" class="btn btn-danger btn-sm float-end">Delete</a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
