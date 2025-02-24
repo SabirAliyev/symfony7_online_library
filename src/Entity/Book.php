@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -18,28 +19,36 @@ class Book
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['book:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['book:read'])]
     private ?string $author = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['book:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[Groups(['book:read'])]
     private ?int $year = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(['book:read'])]
     private ?string $genre = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['book:read'])]
     private ?int $pageCount = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['book:read'])]
     private ?string $coverImage = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['book:read'])]
     private ?User $addedBy = null;
 
     #[ORM\Column]
