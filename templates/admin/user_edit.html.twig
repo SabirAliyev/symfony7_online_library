@@ -4,25 +4,44 @@
 
 {% block body %}
     <div class="container py-5">
-        <h2>Edit User Profile</h2>
+        <h2>Edit User</h2>
 
-        <form method="POST">
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" name="email" value="{{ user.email }}" class="form-control" required>
+        {{ form_start(form) }}
+
+        <div class="mb-3">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.password) }}
+            {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.password) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.roles) }}
+            <div class="form-check">
+                {{ form_widget(form.roles) }}
             </div>
+            {{ form_errors(form.roles) }}
+        </div>
 
-            <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" id="name" name="name" value="{{ user.name }}" class="form-control" required>
-            </div>
+        <div class="mb-3">
+            {{ form_label(form.profilePicture) }}
+            {{ form_widget(form.profilePicture, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.profilePicture) }}
+        </div>
 
-            <div class="mb-3">
-                <label for="roles" class="form-label">Roles (comma-separated)</label>
-                <input type="text" id="roles" name="roles" value="{{ user.roles|join(',') }}" class="form-control">
-            </div>
+        <button type="submit" class="btn btn-primary">Update User</button>
 
-            <button type="submit" class="btn btn-primary">Update User</button>
-        </form>
+        {{ form_end(form) }}
     </div>
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -10,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserProfileType extends AbstractType
 {
@@ -36,6 +36,16 @@ class UserProfileType extends AbstractType
                 'mapped' => false,
                 'attr' =>['autocomplete' => 'new-password'],
                 'required' => false
+            ])
+            ->add('roles', ChoiceType::class, [
+                'choices' => [
+                    'User' => 'ROLE_USER',
+                    'Admin' => 'ROLE_ADMIN',
+                ],
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Roles',
+                'required' => false,
             ])
             ->add('profilePicture', FileType::class, [
                 'label' => 'Profile Picture',

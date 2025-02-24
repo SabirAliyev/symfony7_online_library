@@ -29,9 +29,7 @@
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-md-10">
-                                        <a href={{ path('app_profile_edit', { id: user.id }) }}>
-                                            <strong>{{ user.name }}</strong>
-                                        </a>
+                                        <strong>{{ user.name }}</strong>
                                         <p class="text-muted">...</p>
                                         <h6>Registration date:</h6>
                                         <small class="text-muted">{{ user.registeredAt|date('Y-m-d H:i') }}</small>

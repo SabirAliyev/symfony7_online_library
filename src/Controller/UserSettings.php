@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserProfileType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -25,13 +26,10 @@ class UserSettings extends AbstractController
             throw $this->createNotFoundException('The user not found');
         }
 
-        if ($request->isMethod('POST')) {
-            $user->setName($request->request->get('name'));
-            $user->setEmail($request->request->get('email'));
-            $roles = $request->request->get('roles');
-            $user->setRoles(explode(',', $roles));
+        $form = $this->createForm(UserProfileType::class, $user);
+        $form->handleRequest($request);
 
-            $entityManager->persist($user);
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
             $this->addFlash('success', 'User updated successfully!');
@@ -39,7 +37,7 @@ class UserSettings extends AbstractController
         }
 
         return $this->render('admin/user_edit.html.twig', [
-            'user' => $user
+            'form' => $form->createView(),
         ]);
     }
 
